@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#ifndef __NDKGUI_JNIHELPER_H__
+#define __NDKGUI_JNIHELPER_H__
+
 #pragma once
 
 #include <jni.h>
@@ -26,37 +29,26 @@
 #include <android/log.h>
 #include <android_native_app_glue.h>
 
-#if 1
+
 #define LOGV(...)                                                              \
   ((void)__android_log_print(                                                  \
-      ANDROID_LOG_VERBOSE, NDKGUI::JNIHelper::GetInstance()->GetAppName(), \
+      ANDROID_LOG_VERBOSE, ndkGui::JNIHelper::GetInstance()->GetAppName(), \
       __VA_ARGS__))
 
 #define LOGI(...)                                                           \
   ((void)__android_log_print(                                               \
-      ANDROID_LOG_INFO, NDKGUI::JNIHelper::GetInstance()->GetAppName(), \
+      ANDROID_LOG_INFO, ndkGui::JNIHelper::GetInstance()->GetAppName(), \
       __VA_ARGS__))
 #define LOGW(...)                                                           \
   ((void)__android_log_print(                                               \
-      ANDROID_LOG_WARN, NDKGUI::JNIHelper::GetInstance()->GetAppName(), \
+      ANDROID_LOG_WARN, ndkGui::JNIHelper::GetInstance()->GetAppName(), \
       __VA_ARGS__))
 #define LOGE(...)                                                            \
   ((void)__android_log_print(                                                \
-      ANDROID_LOG_ERROR, NDKGUI::JNIHelper::GetInstance()->GetAppName(), \
+      ANDROID_LOG_ERROR, ndkGui::JNIHelper::GetInstance()->GetAppName(), \
       __VA_ARGS__))
-#else
-// Have this option is to confirm there is no timing issues: after development
-// enable these set of NULL printf to make sure app behaves normally
-#define LOGI(...) (0)
-#define LOGV(...) (0)
-#define LOGW(...) (0)
-#define LOGE(...) (0)
-
-#endif
-namespace NDKGUI {
-
-class JUIView;
-
+                      
+namespace ndkGui {
 /******************************************************************
  * Helper functions for JNI calls
  * This class wraps JNI calls and provides handy interface calling commonly used
@@ -236,8 +228,10 @@ class JNIHelper {
 };
 
 extern "C" {
-JNIEXPORT void Java_com_sample_helper_NDKHelper_RunOnUiThreadHandler(
+JNIEXPORT void ndkGui_JNIHelper_RunOnUiThreadHandler(
     JNIEnv *env, jobject thiz, int64_t pointer);
 }
 
-}  // namespace NDKGUI
+}  // namespace ndkGui
+
+#endif // __NDKGUI_JNIHELPER_H__

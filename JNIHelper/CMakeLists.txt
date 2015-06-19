@@ -3,13 +3,15 @@ set(sources
   JNIHelper.cpp
 )
 
-
 add_library(JNIHelper SHARED ${sources})
-
 target_link_libraries(JNIHelper
     log
     android
-    log
-    EGL
-    GLESv2
 )
+
+install(TARGETS JNIHelper
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+        )
+install(FILES JNIHelper.h
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include
+        )

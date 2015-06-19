@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <EGL/egl.h>
-#include <GLES2/gl2.h>
-#include <fstream>
-#include <iostream>
 
 #include "JNIHelper.h"
 
-namespace NDKGUI {
+#include <fstream>
+#include <iostream>
+
+namespace ndkGui {
 
 #define NATIVEACTIVITY_CLASS_NAME "android/app/NativeActivity"
 
