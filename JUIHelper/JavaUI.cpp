@@ -16,7 +16,7 @@
 
 #include "JavaUI.h"
 
-namespace NDKGUI {
+namespace ndkGui {
 
 /*
  * Callback Handler for Java events
@@ -199,7 +199,7 @@ void JUIView::AddRule(const int32_t layoutParameterIndex,
     LOGE("Invalid rule index");
     return;
   }
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+  ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
       JUIWindow::GetHelperClassInstance(), "addRule",
       "(Landroid/view/View;II)V", GetJobject(), layoutParameterIndex,
       parameter);
@@ -216,7 +216,7 @@ void JUIView::AddRule(const int32_t layoutParameterIndex,
 }
 
 void JUIView::SetLayoutParams(const int32_t width, const int32_t height) {
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+  ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
       JUIWindow::GetHelperClassInstance(), "setLayoutParams",
       "(Landroid/view/View;II)V", GetJobject(), width, height);
   layoutWidth_ = width;
@@ -226,7 +226,7 @@ void JUIView::SetLayoutParams(const int32_t width, const int32_t height) {
 
 void JUIView::SetLayoutParams(const int32_t width, const int32_t height,
                               const float weight) {
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+  ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
       JUIWindow::GetHelperClassInstance(), "setLayoutParams",
       "(Landroid/view/View;IIF)V", GetJobject(), width, height, weight);
   layoutWidth_ = width;
@@ -236,7 +236,7 @@ void JUIView::SetLayoutParams(const int32_t width, const int32_t height,
 
 void JUIView::SetMargins(const int32_t left, const int32_t top,
                          const int32_t right, const int32_t bottom) {
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+  ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
       JUIWindow::GetHelperClassInstance(), "setMargins",
       "(Landroid/view/View;IIII)V", GetJobject(), left, top, right, bottom);
   marginLeft_ = left;
@@ -388,7 +388,7 @@ void JUITextView::Init() {
 
 JUITextView::~JUITextView() {
   if (obj_ != NULL) {
-    NDKGUI::JUIWindow::GetInstance()->CloseWidget(obj_);
+    ndkGui::JUIWindow::GetInstance()->CloseWidget(obj_);
     obj_ = NULL;
   }
 }
@@ -422,7 +422,7 @@ void JUIButton::Init() {
 
 JUIButton::~JUIButton() {
   if (obj_ != NULL) {
-    NDKGUI::JUIWindow::GetInstance()->CloseWidget(obj_);
+    ndkGui::JUIWindow::GetInstance()->CloseWidget(obj_);
     obj_ = NULL;
   }
 }
@@ -441,11 +441,11 @@ void JUIButton::DispatchEvent(const int32_t message, const int32_t param1,
 }
 
 bool JUIButton::SetCallback(
-    std::function<void(NDKGUI::JUIView *, const int32_t)> callback) {
+    std::function<void(ndkGui::JUIView *, const int32_t)> callback) {
   bool b = true;
   onclick_callback_ = callback;
   return b;
 }
 
-}  // namespace NDKGUI
+}  // namespace ndkGui
 

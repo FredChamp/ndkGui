@@ -27,9 +27,9 @@
 #include <string>
 #include <functional>
 #include "JNIHelper.h"
-#include "JavaUI_View.h"
+#include "JUIView.h"
 
-namespace NDKGUI {
+namespace ndkGui {
 /******************************************************************
  * NDKGUI is a helper library to use Java UI easily from Native code.
  * With the helper, an application can instantiate Java controls such as Button,
@@ -126,11 +126,11 @@ class JUIButton : public JUITextView {
    * Set callback to an input event
    */
   bool SetCallback(
-      std::function<void(NDKGUI::JUIView *, const int32_t)> callback);
+      std::function<void(ndkGui::JUIView *, const int32_t)> callback);
 
  private:
   void Init();
-  std::function<void(NDKGUI::JUIView *, const int32_t)> onclick_callback_;
+  std::function<void(ndkGui::JUIView *, const int32_t)> onclick_callback_;
 
  protected:
   explicit JUIButton(const bool b);
@@ -288,7 +288,7 @@ class JUIDialog : public JUIBase {
    * Set a callback to dialog life cycle event
    */
   bool SetCallback(const int32_t message,
-                   std::function<void(NDKGUI::JUIDialog *dialog,
+                   std::function<void(ndkGui::JUIDialog *dialog,
                                       const int32_t message)> callback);
 
   /*
@@ -319,9 +319,9 @@ class JUIDialog : public JUIBase {
   std::vector<JUIView *> views_;
   bool suspended_;
 
-  std::function<void(NDKGUI::JUIDialog *dialog, const int32_t message)>
+  std::function<void(ndkGui::JUIDialog *dialog, const int32_t message)>
       dismiss_callback_;
-  std::function<void(NDKGUI::JUIDialog *dialog, const int32_t message)>
+  std::function<void(ndkGui::JUIDialog *dialog, const int32_t message)>
       cancel_callback_;
 
   void CreateDialog();

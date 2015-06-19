@@ -1,16 +1,26 @@
-include_directories(
-    ${CMAKE_SOURCE_DIR}/JNIHelper
-)
-set(sources
+set(HEADERS
   JavaUI.h
-  JavaUI.cpp
-  JavaUI_Dialog.cpp
-  JavaUI_View.h
-  JavaUI_Window.cpp
+  JUIView.h
+  JUIBase.h
+  IdFactory.h
+
 )
 
-add_library(JUIHelper SHARED ${sources})
+set(SOURCES
+    JavaUI.cpp
+    JavaUI_Dialog.cpp
+    JavaUI_Window.cpp
+)
+
+add_library(JUIHelper SHARED ${HEADERS} ${SOURCES})
 
 target_link_libraries(JUIHelper
     JNIHelper
 )
+
+install(TARGETS JUIHelper
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+        )
+install(FILES ${HEADERS}
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/include
+        )

@@ -16,7 +16,7 @@
 
 #include "JavaUI.h"
 
-namespace NDKGUI {
+namespace ndkGui {
 /*
  * JUI Dialog
  */
@@ -73,7 +73,7 @@ void JUIDialog::Init(ANativeActivity *activity) {
 }
 
 void JUIDialog::CreateDialog() {
-  ndk_helper::JNIHelper &helper = *ndk_helper::JNIHelper::GetInstance();
+  ndkGui::JNIHelper &helper = *ndkGui::JNIHelper::GetInstance();
   JNIEnv *env = helper.AttachCurrentThread();
 
   // Create dialog
@@ -89,14 +89,14 @@ void JUIDialog::CreateDialog() {
   obj_ = env->NewGlobalRef(obj);
 
   // Notify 'id' to JNI side
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(obj_, "setID", "(I)V",
+  ndkGui::JNIHelper::GetInstance()->CallVoidMethod(obj_, "setID", "(I)V",
                                                        id_factory_.getId(this));
   env->DeleteLocalRef(obj);
 }
 
 void JUIDialog::DeleteObject() {
   if (obj_) {
-    ndk_helper::JNIHelper *helper = ndk_helper::JNIHelper::GetInstance();
+    ndkGui::JNIHelper *helper = ndkGui::JNIHelper::GetInstance();
     JNIEnv *env = helper->AttachCurrentThread();
     env->DeleteGlobalRef(obj_);
     obj_ = NULL;
@@ -110,7 +110,7 @@ void JUIDialog::Close() {
   if (obj_) {
     LOGI("Closing Dialog");
 
-    ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(obj_, "dismiss",
+    ndkGui::JNIHelper::GetInstance()->CallVoidMethod(obj_, "dismiss",
                                                          "()V");
 
     // Delete child views
@@ -125,7 +125,7 @@ void JUIDialog::Close() {
     views_.clear();
     activity_ = NULL;
     obj_ = NULL;
-    NDKGUI::JUIWindow::GetInstance()->SetDialog(NULL);
+    ndkGui::JUIWindow::GetInstance()->SetDialog(NULL);
   }
 }
 
@@ -133,14 +133,14 @@ void JUIDialog::Close() {
  * Add JUIView to popup window
  */
 void JUIDialog::AddView(JUIView *view) {
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+  ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
       obj_, "addView", "(Landroid/view/View;)V", view->GetJobject());
   views_.push_back(view);
 }
 
 void JUIDialog::Show() {
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(obj_, "show", "()V");
-  NDKGUI::JUIWindow::GetInstance()->SetDialog(this);
+  ndkGui::JNIHelper::GetInstance()->CallVoidMethod(obj_, "show", "()V");
+  ndkGui::JUIWindow::GetInstance()->SetDialog(this);
 }
 
 void JUIDialog::Suspend() {
@@ -155,7 +155,7 @@ void JUIDialog::Resume(ANativeActivity *activity) {
   activity_ = activity;
   DeleteObject();
 
-  ndk_helper::JNIHelper::GetInstance()->RunOnUiThread([this]() {
+  ndkGui::JNIHelper::GetInstance()->RunOnUiThread([this]() {
     suspended_ = false;
     // Creating dialog asynchronous to avoid a crash inside a framework
     CreateDialog();
@@ -167,7 +167,7 @@ void JUIDialog::Resume(ANativeActivity *activity) {
     while (itBegin != itEnd) {
       // Restore
       (*itBegin)->Restore();
-      ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+      ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
           obj_, "addView", "(Landroid/view/View;)V", (*itBegin)->GetJobject());
 
       itBegin++;
@@ -182,13 +182,13 @@ void JUIDialog::DispatchEvent(const int32_t message, const int32_t param1,
   switch (message) {
     case JUICALLBACK_DIALOG_DISMISSED:
       if (suspended_ == false) {
-        NDKGUI::JUIWindow::GetInstance()->SetDialog(NULL);
+        ndkGui::JUIWindow::GetInstance()->SetDialog(NULL);
         if (dismiss_callback_) dismiss_callback_(this, message);
       }
       break;
     case JUICALLBACK_DIALOG_CANCELLED:
       if (suspended_ == false) {
-        NDKGUI::JUIWindow::GetInstance()->SetDialog(NULL);
+        ndkGui::JUIWindow::GetInstance()->SetDialog(NULL);
         if (cancel_callback_) cancel_callback_(this, message);
       }
       break;
@@ -199,7 +199,7 @@ void JUIDialog::DispatchEvent(const int32_t message, const int32_t param1,
 
 bool JUIDialog::SetCallback(
     const int32_t message,
-    std::function<void(NDKGUI::JUIDialog *dialog, const int32_t message)>
+    std::function<void(ndkGui::JUIDialog *dialog, const int32_t message)>
         callback) {
   switch (message) {
     case JUICALLBACK_DIALOG_DISMISSED:
@@ -256,4 +256,4 @@ void JUIDialog::RestoreParameters(
     it++;
   }
 }
-}  // namespace NDKGUI
+}  // namespace ndkGui

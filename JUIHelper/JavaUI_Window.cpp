@@ -16,7 +16,7 @@
 
 #include "JavaUI.h"
 
-namespace NDKGUI {
+namespace ndkGui {
 
 /*
  * JUIWindow
@@ -33,7 +33,7 @@ JUIWindow::JUIWindow()
 }
 
 JUIWindow::~JUIWindow() {
-  ndk_helper::JNIHelper *helper = ndk_helper::JNIHelper::GetInstance();
+  ndkGui::JNIHelper *helper = ndkGui::JNIHelper::GetInstance();
   JNIEnv *env = helper->AttachCurrentThread();
 
   env->DeleteGlobalRef(jni_helper_java_ref_);
@@ -76,7 +76,7 @@ void JUIWindow::Init(ANativeActivity *activity, const char *helper_class_name) {
   }
   window.activity_ = activity;
 
-  ndk_helper::JNIHelper &helper = *ndk_helper::JNIHelper::GetInstance();
+  ndkGui::JNIHelper &helper = *ndkGui::JNIHelper::GetInstance();
   JNIEnv *env = helper.AttachCurrentThread();
 
   if (helper_class_name != NULL && window.jni_helper_java_class_ == NULL &&
@@ -127,7 +127,7 @@ void JUIWindow::Suspend(const int32_t cmd) {
 
   LOGI("Suspending JUI");
   if (popupWindow_) {
-    ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+    ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
         jni_helper_java_ref_, "suspendPopupWindow",
         "(Landroid/widget/PopupWindow;)V", popupWindow_);
     popupWindow_ = NULL;
@@ -171,7 +171,7 @@ void JUIWindow::Resume(ANativeActivity *activity, const int32_t cmd) {
   activity_ = NULL;
   Init(activity);
 
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+  ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
       jni_helper_java_ref_, "resumePopupWindow",
       "(Landroid/app/NativeActivity;Landroid/widget/PopupWindow;)V",
       activity_->clazz, popupWindow_);
@@ -182,7 +182,7 @@ void JUIWindow::Resume(ANativeActivity *activity, const int32_t cmd) {
   while (itBegin != itEnd) {
     // Restore
     (*itBegin)->Restore();
-    ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+    ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
         jni_helper_java_ref_, "addView", "(Landroid/view/View;)V",
         (*itBegin)->GetJobject());
 
@@ -202,10 +202,10 @@ void JUIWindow::Resume(ANativeActivity *activity, const int32_t cmd) {
  */
 void JUIWindow::Close() {
   LOGI("Closing JUI");
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+  ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
       jni_helper_java_ref_, "closePopupWindow",
       "(Landroid/widget/PopupWindow;)V", popupWindow_);
-  ndk_helper::JNIHelper::GetInstance()->DeleteObject(popupWindow_);
+  ndkGui::JNIHelper::GetInstance()->DeleteObject(popupWindow_);
 
   auto itBegin = views_.begin();
   auto itEnd = views_.end();
@@ -226,7 +226,7 @@ void JUIWindow::Close() {
  * Add JUIView to popup window
  */
 void JUIWindow::AddView(JUIView *view) {
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+  ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
       jni_helper_java_ref_, "addView", "(Landroid/view/View;)V",
       view->GetJobject());
   views_.push_back(view);
@@ -240,7 +240,7 @@ jobject JUIWindow::CreateWidget(const char *strWidgetName, void *id) {
     return NULL;
   }
 
-  ndk_helper::JNIHelper *helper = ndk_helper::JNIHelper::GetInstance();
+  ndkGui::JNIHelper *helper = ndkGui::JNIHelper::GetInstance();
   JNIEnv *env = helper->AttachCurrentThread();
 
   // Create widget
@@ -274,7 +274,7 @@ jobject JUIWindow::CreateWidget(const char *strWidgetName, void *id,
     return NULL;
   }
 
-  ndk_helper::JNIHelper *helper = ndk_helper::JNIHelper::GetInstance();
+  ndkGui::JNIHelper *helper = ndkGui::JNIHelper::GetInstance();
   JNIEnv *env = helper->AttachCurrentThread();
 
   // Create widget
@@ -308,7 +308,7 @@ void JUIWindow::CloseWidget(jobject obj) {
     return;
   }
 
-  ndk_helper::JNIHelper *helper = ndk_helper::JNIHelper::GetInstance();
+  ndkGui::JNIHelper *helper = ndkGui::JNIHelper::GetInstance();
   JNIEnv *env = helper->AttachCurrentThread();
 
   static jmethodID mid = NULL;
@@ -327,4 +327,4 @@ void JUIWindow::CloseWidget(jobject obj) {
   return;
 }
 
-}  // namespace NDKGUI
+}  // namespace ndkGui
