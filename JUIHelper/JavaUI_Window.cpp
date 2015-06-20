@@ -95,7 +95,7 @@ void JUIWindow::Init(ANativeActivity *activity, const char *helper_class_name) {
 
     window.jni_helper_java_ref_ = env->NewObject(window.jni_helper_java_class_,
                                                  constructor, activity->clazz);
-                                                 LOGI("Initialized Java UI 4");
+
     window.jni_helper_java_ref_ =
         env->NewGlobalRef(window.jni_helper_java_ref_);
     env->DeleteLocalRef(cls);
