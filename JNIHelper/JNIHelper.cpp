@@ -50,6 +50,7 @@ JNIHelper::~JNIHelper() {
   JNIEnv *env = AttachCurrentThread();
   env->DeleteGlobalRef(jni_helper_java_ref_);
   env->DeleteGlobalRef(jni_helper_java_class_);
+  DetachCurrentThread();
 }
 
 /*
@@ -72,6 +73,7 @@ void JNIHelper::Init(ANativeActivity *activity, const char *helper_class_name) {
 
   jstring packageName = (jstring)env->CallObjectMethod(helper.activity_->clazz,
                                                        midGetPackageName);
+                                                       LOGI(" BITE 0");
   const char *appname = env->GetStringUTFChars(packageName, NULL);
   helper.app_bunlde_name_ = std::string(appname);
 
@@ -88,16 +90,18 @@ void JNIHelper::Init(ANativeActivity *activity, const char *helper_class_name) {
   helper.jni_helper_java_ref_ = env->NewGlobalRef(helper.jni_helper_java_ref_);
 
   // Get app label
-  jstring labelName = (jstring)helper.CallObjectMethod("getApplicationName",
-                                                       "()Ljava/lang/String;");
-  const char *label = env->GetStringUTFChars(labelName, NULL);
-  helper.app_label_ = std::string(label);
+  // jstring labelName = (jstring)helper.CallObjectMethod("getApplicationName",
+  //                                                      "()Ljava/lang/String;");
+  //                                                      LOGI(" BITE 1");
+  // const char *label = env->GetStringUTFChars(labelName, NULL);
+  helper.app_label_ = std::string("test");
 
   env->ReleaseStringUTFChars(packageName, appname);
-  env->ReleaseStringUTFChars(labelName, label);
+  // env->ReleaseStringUTFChars(labelName, label);
   env->DeleteLocalRef(packageName);
-  env->DeleteLocalRef(labelName);
+  // env->DeleteLocalRef(labelName);
   env->DeleteLocalRef(cls);
+  helper.DetachCurrentThread();
 }
 
 void JNIHelper::Init(ANativeActivity *activity, const char *helper_class_name,
@@ -118,6 +122,7 @@ void JNIHelper::Init(ANativeActivity *activity, const char *helper_class_name,
     env->CallVoidMethod(helper.jni_helper_java_ref_, mid, soname);
 
     env->DeleteLocalRef(soname);
+    helper.DetachCurrentThread();
   }
 }
 
@@ -150,6 +155,7 @@ std::string JNIHelper::GetNearbyConnectionServiceID() {
   service_id = std::string(resultCStr);
   env->ReleaseStringUTFChars(resultJNIStr, resultCStr);
   env->DeleteLocalRef(resultJNIStr);
+  DetachCurrentThread();
   return service_id;
 }
 /*
@@ -181,6 +187,7 @@ void JNIHelper::DeleteObject(jobject obj) {
 
   JNIEnv *env = AttachCurrentThread();
   env->DeleteGlobalRef(obj);
+  DetachCurrentThread();
 }
 
 jobject JNIHelper::CallObjectMethod(const char *strMethodName,
@@ -204,7 +211,7 @@ jobject JNIHelper::CallObjectMethod(const char *strMethodName,
   va_start(args, strSignature);
   jobject obj = env->CallObjectMethodV(jni_helper_java_ref_, mid, args);
   va_end(args);
-
+  DetachCurrentThread();
   return obj;
 }
 
@@ -228,6 +235,7 @@ void JNIHelper::CallVoidMethod(const char *strMethodName,
   va_start(args, strSignature);
   env->CallVoidMethodV(jni_helper_java_ref_, mid, args);
   va_end(args);
+  DetachCurrentThread();
 
   return;
 }
@@ -255,6 +263,7 @@ jobject JNIHelper::CallObjectMethod(jobject object, const char *strMethodName,
   va_end(args);
 
   env->DeleteLocalRef(cls);
+  DetachCurrentThread();
   return obj;
 }
 
@@ -281,6 +290,7 @@ void JNIHelper::CallVoidMethod(jobject object, const char *strMethodName,
   va_end(args);
 
   env->DeleteLocalRef(cls);
+  DetachCurrentThread();
   return;
 }
 
@@ -307,6 +317,7 @@ float JNIHelper::CallFloatMethod(jobject object, const char *strMethodName,
   va_end(args);
 
   env->DeleteLocalRef(cls);
+  DetachCurrentThread();
   return f;
 }
 
@@ -333,6 +344,7 @@ int32_t JNIHelper::CallIntMethod(jobject object, const char *strMethodName,
   va_end(args);
 
   env->DeleteLocalRef(cls);
+  DetachCurrentThread();
   return i;
 }
 
@@ -359,6 +371,7 @@ bool JNIHelper::CallBooleanMethod(jobject object, const char *strMethodName,
   va_end(args);
 
   env->DeleteLocalRef(cls);
+  DetachCurrentThread();
   return b;
 }
 
@@ -372,6 +385,7 @@ jobject JNIHelper::CreateObject(const char *class_name) {
   jobject objGlobal = env->NewGlobalRef(obj);
   env->DeleteLocalRef(obj);
   env->DeleteLocalRef(cls);
+  DetachCurrentThread();
   return objGlobal;
 }
 
@@ -387,6 +401,7 @@ void JNIHelper::RunOnUiThread(std::function<void()> callback) {
   // Allocate temporary function object to be passed around
   std::function<void()> *pCallback = new std::function<void()>(callback);
   env->CallVoidMethod(jni_helper_java_ref_, mid, (int64_t)pCallback);
+  DetachCurrentThread();
 }
 
 // This JNI function is invoked from UIThread asynchronously

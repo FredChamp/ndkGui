@@ -40,6 +40,7 @@ JUIWindow::~JUIWindow() {
   env->DeleteGlobalRef(jni_helper_java_class_);
 
   JUIBase::id_factory_.remove(reinterpret_cast<const JUIBase *>(this));
+  helper->DetachCurrentThread();
 
 }
 
@@ -76,6 +77,7 @@ void JUIWindow::Init(ANativeActivity *activity, const char *helper_class_name) {
   }
   window.activity_ = activity;
 
+
   ndkGui::JNIHelper &helper = *ndkGui::JNIHelper::GetInstance();
   JNIEnv *env = helper.AttachCurrentThread();
 
@@ -89,11 +91,15 @@ void JUIWindow::Init(ANativeActivity *activity, const char *helper_class_name) {
     jmethodID constructor =
         env->GetMethodID(window.jni_helper_java_class_, "<init>",
                          "(Landroid/app/NativeActivity;)V");
+                         
+
     window.jni_helper_java_ref_ = env->NewObject(window.jni_helper_java_class_,
                                                  constructor, activity->clazz);
+                                                 LOGI("Initialized Java UI 4");
     window.jni_helper_java_ref_ =
         env->NewGlobalRef(window.jni_helper_java_ref_);
     env->DeleteLocalRef(cls);
+    
   }
 
   // Create popupWindow
@@ -102,6 +108,7 @@ void JUIWindow::Init(ANativeActivity *activity, const char *helper_class_name) {
       "(Landroid/app/NativeActivity;)Landroid/widget/PopupWindow;");
   jobject obj = env->CallObjectMethod(window.jni_helper_java_ref_, mid,
                                       window.activity_->clazz);
+                                      LOGI("Initialized Java UI 7");
   jobject objGlobal = env->NewGlobalRef(obj);
 
   if (objGlobal == NULL) {
@@ -109,6 +116,7 @@ void JUIWindow::Init(ANativeActivity *activity, const char *helper_class_name) {
   }
   window.popupWindow_ = objGlobal;
   env->DeleteLocalRef(obj);
+  helper.DetachCurrentThread();
 }
 
 /*
@@ -261,6 +269,7 @@ jobject JUIWindow::CreateWidget(const char *strWidgetName, void *id) {
   jobject objGlobal = env->NewGlobalRef(obj);
   env->DeleteLocalRef(name);
   env->DeleteLocalRef(obj);
+  helper->DetachCurrentThread();
 
   return objGlobal;
 }
@@ -297,6 +306,7 @@ jobject JUIWindow::CreateWidget(const char *strWidgetName, void *id,
   jobject objGlobal = env->NewGlobalRef(obj);
   env->DeleteLocalRef(name);
   env->DeleteLocalRef(objGlobal);
+  helper->DetachCurrentThread();
   return objGlobal;
 }
 
@@ -323,6 +333,7 @@ void JUIWindow::CloseWidget(jobject obj) {
 
   env->CallVoidMethod(jni_helper_java_ref_, mid, obj);
   env->DeleteGlobalRef(obj);
+  helper->DetachCurrentThread();
 
   return;
 }

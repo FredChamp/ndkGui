@@ -137,8 +137,9 @@ public:
          jstring stringGlobal = (jstring)env->NewGlobalRef(string);
          ndkGui::JNIHelper::GetInstance()->CallVoidMethod(
              obj_, s.c_str(), "(Ljava/lang/CharSequence;)V", stringGlobal);
-         env->DeleteGlobalRef(stringGlobal);
-         env->DeleteLocalRef(string);
+         // env->DeleteGlobalRef(stringGlobal);
+         // env->DeleteLocalRef(string);
+             ndkGui::JNIHelper::GetInstance()->DetachCurrentThread();
 
          p.type = ATTRIBUTE_PARAMETER_STRING;
          if (p.str != NULL) {

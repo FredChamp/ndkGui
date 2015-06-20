@@ -160,7 +160,7 @@ class JNIHelper {
     if (activity_->vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_4) == JNI_OK)
       return env;
     activity_->vm->AttachCurrentThread(&env, NULL);
-    pthread_key_create(reinterpret_cast<int32_t*>(activity_), DetachCurrentThreadDtor);
+    // pthread_key_create(reinterpret_cast<int32_t*>(activity_), DetachCurrentThreadDtor);
     return env;
   }
 
@@ -220,11 +220,11 @@ class JNIHelper {
   /*
    * Unregister this thread from the VM
    */
-  static void DetachCurrentThreadDtor(void *p) {
-    LOGI("detached current thread");
-    ANativeActivity *activity = reinterpret_cast<ANativeActivity *> (p);
-    activity->vm->DetachCurrentThread();
-  }
+  // static void DetachCurrentThreadDtor(void *p) {
+  //   LOGI("detached current thread");
+  //   ANativeActivity *activity = reinterpret_cast<ANativeActivity *> (p);
+  //   activity->vm->DetachCurrentThread();
+  // }
 };
 
 extern "C" {
