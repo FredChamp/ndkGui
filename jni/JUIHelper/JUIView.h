@@ -199,7 +199,7 @@ class JUIView : public JUIBase {
   }
 
  private:
-  const static AttributeType attributes_[];
+  static const AttributeType attributes_[];
   int32_t array_current_rules_[LAYOUT_PARAMETER_COUNT];
 
   int32_t layoutWidth_;

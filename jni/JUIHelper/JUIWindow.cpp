@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-#include "JavaUI.h"
+#include "JUIWindow.h"
+#include "JUIView.h"
 
 namespace ndkGui {
 

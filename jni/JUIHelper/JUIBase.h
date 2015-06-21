@@ -1,9 +1,12 @@
 #ifndef __NDKGUI_JUIBASE_H__
 #define __NDKGUI_JUIBASE_H__
 
-#include <JNIHelper.h>
+#include <map>
+#include <unordered_map>
+#include <string>
 
-#include <IdFactory.h>
+#include <JNIHelper.h>
+#include "IdFactory.h"
 
 namespace ndkGui 
 {

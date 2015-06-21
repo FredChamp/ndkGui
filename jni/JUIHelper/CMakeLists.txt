@@ -1,15 +1,21 @@
 set(HEADERS
-  JavaUI.h
-  JUIView.h
-  JUIBase.h
-  IdFactory.h
-
+    IdFactory.h
+    JUIBase.h
+    JUIButton.h
+    JUIDialog.h
+    JUITextView.h
+    JUIView.h
+    JUIWindow.h
 )
 
 set(SOURCES
-    JavaUI.cpp
-    JavaUI_Dialog.cpp
-    JavaUI_Window.cpp
+    IdFactory.cpp
+    JUIBase.cpp
+    JUIButton.cpp
+    JUIDialog.cpp
+    JUITextView.cpp
+    JUIView.cpp
+    JUIWindow.cpp
 )
 
 add_library(JUIHelper SHARED ${HEADERS} ${SOURCES})

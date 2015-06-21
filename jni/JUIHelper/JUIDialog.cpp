@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "JavaUI.h"
+#include "JUIDialog.h"
 
 namespace ndkGui {
 /*

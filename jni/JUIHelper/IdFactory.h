@@ -1,6 +1,7 @@
 #ifndef __NDKGUI_IDFACTORY_H__
 #define __NDKGUI_IDFACTORY_H__
 
+#include <unordered_map>
 #include <JNIHelper.h>
 
 namespace ndkGui {
