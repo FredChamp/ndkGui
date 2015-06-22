@@ -12,3 +12,7 @@ include_directories(
 
 add_subdirectory(jni/JNIHelper)
 add_subdirectory(jni/JUIHelper)
+
+install(DIRECTORY src/com
+        DESTINATION ${CMAKE_INSTALL_PREFIX}/src
+        )
