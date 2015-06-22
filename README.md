@@ -1,4 +1,4 @@
-# AndroiNDK_GUI
+# ndkGui
 test libraries to create GUI with the NDK
 extracted from https://github.com/googlesamples/android-nearby-cpp
 
