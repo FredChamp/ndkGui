@@ -74,7 +74,7 @@ class JNIHelper {
    * in: activity, pointer to ANativeActivity. Used internally to set up JNI
    * environment
    * in: helper_class_name, pointer to Java side helper class name. (e.g.
-   * "com/sample/helper/NDKHelper" in samples )
+   * "com/ndkgui/helper/NDKHelper" in samples )
    */
   static void Init(ANativeActivity *activity, const char *helper_class_name);
 
@@ -88,7 +88,7 @@ class JNIHelper {
    * in: activity, pointer to ANativeActivity. Used internally to set up JNI
    * environment
    * in: helper_class_name, pointer to Java side helper class name. (e.g.
-   * "com/sample/helper/NDKHelper" in samples )
+   * "com/ndkgui/helper/NDKHelper" in samples )
    * in: native_soname, pointer to soname of native library. (e.g.
    * "NativeActivity" for "libNativeActivity.so" )
    */
