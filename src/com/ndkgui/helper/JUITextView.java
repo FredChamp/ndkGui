@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sample.helper;
+
+package com.ndkgui.helper;
 
 import android.app.NativeActivity;
 import android.widget.TextView;
