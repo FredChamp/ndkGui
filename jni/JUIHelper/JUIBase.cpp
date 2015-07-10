@@ -6,7 +6,7 @@ namespace ndkGui
  * Callback Handler for Java events
  */
 extern "C" {
-JNIEXPORT void Java_com_sample_helper_JUIHelper_JUICallbackHandler(
+JNIEXPORT void Java_com_ndkgui_helper_JUIHelper_JUICallbackHandler(
     JNIEnv *env, jobject thiz, int32_t id, int32_t message, int32_t param1,
     int32_t param2) {
   /*
