@@ -1,4 +1,4 @@
-#include "JUITextView.H"
+#include "JUITextView.h"
 
 #include "JUIWindow.h"
 
